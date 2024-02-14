@@ -25,6 +25,10 @@ public class Task {
         myTitle = theTitle;
         myTaskStatus = TaskStatus.UNFINISHED;
     }
+    public Task(final Task otherTask) {
+        myTitle = otherTask.getTitle();
+        myTaskStatus = otherTask.getStatus();
+    }
 
     /**
      * Gets the status of this Task, whether it is unfinished, in progress, or finished.
