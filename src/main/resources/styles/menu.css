@@ -1,19 +1,26 @@
 .menu_container {
     -fx-background-color: #2020AA;
+    -fx-font-family: "Arial Rounded MT Bold";
 }
 .menu_container .button {
     -fx-background-color: #2424FF;
     -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(two-pass-box, #202066, 5, 0, 2, 2);
 }
-.menu_container .choice-box {
+.titled-pane .title, .text {
     -fx-background-color: #2020FF;
     -fx-text-fill: #FFFFFF;
+    -fx-fill: #FFFFFF;
+}
+.menu_container .project_accordion .project_dropdown{
+    -fx-border-radius: 120;
+    -fx-effect: dropshadow(two-pass-box, #202066, 5, 0, 2, 2);
+}
+.arrow {
+    -fx-background-color: #FFFFFF;
 }
 .menu_container .button:hover, .choice-box:hover{
     -fx-cursor: hand;
-}
-.choice-box .arrow {
-    -fx-background-color: #FFFFFF;
 }
 .label {
     -fx-text-alignment: center;
