@@ -1,3 +1,9 @@
-.button .choice-box{
-    -fx-background-color: #aaaaFF;
+.dashboard_container .task_container .scroll-pane .task_container {
+    -fx-pref-width: 100%;
+    -fx-background-color: yellow;
+}
+.dashboard_container .tasks_container .scroll-pane .task_container .label {
+    -fx-pref-width: 100%;
+    -fx-text-alignment: center;
+    -fx-text-fill: blue;
 }
