@@ -3,7 +3,7 @@ package johan.projector.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-public class CreateProjectController {
+public class ProjectController {
     @FXML
     private Button createButton;
 

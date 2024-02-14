@@ -45,6 +45,8 @@ public class MainController implements Initializable {
         Scene scene = new Scene(loader.load());
         Stage stage = new Stage();
         stage.setScene(scene);
+        addProjectButton.setDisable(true);
+        stage.setOnHidden((e) -> addProjectButton.setDisable(false));
         stage.show();
     }
 }
