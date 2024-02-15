@@ -10,15 +10,13 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import johan.projector.App;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController implements Initializable {
     @FXML
@@ -47,6 +45,10 @@ public class MainController implements Initializable {
         stage.setScene(scene);
         addProjectButton.setDisable(true);
         stage.setOnHidden((e) -> addProjectButton.setDisable(false));
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/logo.png"))));
+        stage.setTitle("Create new Porject");
+        stage.setX(addProjectButton.getScene().getWindow().getX() + 50);
+        stage.setY(addProjectButton.getScene().getWindow().getY() + 50);
         stage.show();
     }
 }
