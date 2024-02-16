@@ -4,7 +4,7 @@ package johan.projector.models;
  * This class represents a Task, that should be displayed with its corresponding Project.
  *
  * @author Johan Hernandez
- * @version 1.0.0
+ * @version 1.0.2
  */
 public class Task {
     /**
@@ -22,9 +22,25 @@ public class Task {
      * @param theTitle is the title of the task being created
      */
     public Task(final String theTitle) {
-        myTitle = theTitle;
-        myTaskStatus = TaskStatus.UNFINISHED;
+        this(theTitle, TaskStatus.UNFINISHED);
     }
+
+    /**
+     * Constructor that allows you to preset the Task Status
+     *
+     * @param theTitle the title of the task
+     * @param theStatus the status of the task
+     */
+    public Task(final String theTitle, final TaskStatus theStatus) {
+        myTitle = theTitle;
+        myTaskStatus = theStatus;
+    }
+
+    /**
+     * Creates a new Task with the same fields as the given Task
+     *
+     * @param otherTask the Task being copied
+     */
     public Task(final Task otherTask) {
         myTitle = otherTask.getTitle();
         myTaskStatus = otherTask.getStatus();
@@ -60,5 +76,15 @@ public class Task {
      */
     public void setFinished() {
         myTaskStatus = TaskStatus.FINISHED;
+    }
+
+    /**
+     * A string containing the title of the Task, along with its Status
+     *
+     * @return a String representation of a Task
+     */
+    @Override
+    public String toString() {
+        return "Task: " + myTitle + " (" + myTaskStatus + ")\n";
     }
 }

@@ -6,11 +6,20 @@ import java.util.*;
  * This Class represents a singular Project with Tasks attached to it.
  *
  * @author Johan Hernandez
- * @version 1.0.0
+ * @version 1.1.0
  */
 public class Project {
+    /**
+     * The title of this Project
+     */
     private String myTitle;
+    /**
+     * The Description of this project
+     */
     private String myDescription;
+    /**
+     * The Tasks associated with this project
+     */
     private Map<TaskStatus, List<Task>> myTasks;
 
     /**
@@ -32,6 +41,9 @@ public class Project {
         myTitle = theTitle;
         myDescription = theDescription;
         myTasks = new HashMap<>();
+        myTasks.put(TaskStatus.UNFINISHED, new ArrayList<>());
+        myTasks.put(TaskStatus.IN_PROGRESS, new ArrayList<>());
+        myTasks.put(TaskStatus.FINISHED, new ArrayList<>());
     }
 
     /**
@@ -51,7 +63,13 @@ public class Project {
     public String getDescription() {
         return myDescription;
     }
-
+    public List<Task> getAllTasks() {
+        List<Task> out = new ArrayList<>();
+        for (final TaskStatus s : myTasks.keySet()) {
+            out.addAll(myTasks.get(s));
+        }
+        return out;
+    }
     /**
      * Gets the unfinished tasks associated with this Project.
      *
@@ -95,5 +113,15 @@ public class Project {
      */
     public void addTask(final Task theTask) {
         myTasks.get(theTask.getStatus()).add(new Task(theTask));
+    }
+
+    /**
+     * Includes the Project name, description, and a list of tasks associated with it.
+     *
+     * @return a String representation of this Project
+     */
+    @Override
+    public String toString() {
+        return "Project: " + myTitle + " - " + myDescription + '\'' + " - Tasks:\n" + myTasks + "\n";
     }
 }
