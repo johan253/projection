@@ -59,7 +59,8 @@
                   <PieChart fx:id="pieChart" title="Task Progress" />
                   <VBox prefHeight="160.0" prefWidth="450.0">
                      <children>
-                        <Label maxWidth="1.7976931348623157E308" prefHeight="50.0" text="Current Project:" />
+                        <Label fx:id="currentProjectTitleLabel" maxWidth="1.7976931348623157E308" prefHeight="50.0" text="Current Project:" />
+                        <Label fx:id="currentProjectDescriptionLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="109.0" prefWidth="261.0" text="Description PLACEHOLDER" wrapText="true" />
                      </children>
                   </VBox>
                </children>

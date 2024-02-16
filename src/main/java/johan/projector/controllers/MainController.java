@@ -25,6 +25,10 @@ public class MainController implements Initializable {
     private Button addProjectButton;
     @FXML
     private PieChart pieChart;
+    @FXML
+    private Label currentProjectTitleLabel;
+    @FXML
+    private Label currentProjectDescriptionLabel;
     private List<PieChart.Data> taskData;
     private final DatabaseDriver myDatabaseDriver = DatabaseDriver.getInstance();
 
@@ -38,6 +42,8 @@ public class MainController implements Initializable {
         taskData.clear();
         //TODO: add ability to select Project to display Data
         Project project = myDatabaseDriver.getProject("PROJECTion");
+        currentProjectTitleLabel.setText("Current Project: " + project.getTitle());
+        currentProjectDescriptionLabel.setText(project.getDescription());
         int unfinished = project.getUnfinishedTasks().size();
         int inprogress = project.getInProgressTasks().size();
         int finished = project.getFinishedTasks().size();
