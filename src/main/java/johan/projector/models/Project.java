@@ -70,6 +70,19 @@ public class Project {
         }
         return out;
     }
+//
+//    /**
+//     * Gets the total number of Tasks this project has
+//     *
+//     * @return the number of tasks this Project has
+//     */
+//    public int getTaskCount() {
+//        int temp = 0;
+//        for (final TaskStatus s : myTasks.keySet()) {
+//            temp += myTasks.get(s).size();
+//        }
+//        return temp;
+//    }
     /**
      * Gets the unfinished tasks associated with this Project.
      *

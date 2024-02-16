@@ -13,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import johan.projector.App;
+import johan.projector.models.DatabaseDriver;
+import johan.projector.models.Project;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,6 +26,7 @@ public class MainController implements Initializable {
     @FXML
     private PieChart pieChart;
     private List<PieChart.Data> taskData;
+    private final DatabaseDriver myDatabaseDriver = DatabaseDriver.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -32,9 +35,13 @@ public class MainController implements Initializable {
         pieChart.setData(FXCollections.observableList(taskData));
     }
     private void initData() {
-        taskData.add(new PieChart.Data("complete", 3));
-        taskData.add(new PieChart.Data("incomplete", 8));
-        taskData.add(new PieChart.Data("in progress", 1));
+        Project project = myDatabaseDriver.getProject("PROJECTion");
+        int unfinished = project.getUnfinishedTasks().size();
+        int inprogress = project.getInProgressTasks().size();
+        int finished = project.getFinishedTasks().size();
+        taskData.add(new PieChart.Data("Unfinished", unfinished));
+        taskData.add(new PieChart.Data("Finished", finished));
+        taskData.add(new PieChart.Data("inprogress", inprogress));
     }
 
     @FXML
