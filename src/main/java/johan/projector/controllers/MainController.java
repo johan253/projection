@@ -35,6 +35,8 @@ public class MainController implements Initializable {
         pieChart.setData(FXCollections.observableList(taskData));
     }
     private void initData() {
+        taskData.clear();
+        //TODO: add ability to select Project to display Data
         Project project = myDatabaseDriver.getProject("PROJECTion");
         int unfinished = project.getUnfinishedTasks().size();
         int inprogress = project.getInProgressTasks().size();
