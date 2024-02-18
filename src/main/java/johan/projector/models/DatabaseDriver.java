@@ -1,7 +1,11 @@
 package johan.projector.models;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.lang.reflect.Executable;
 import java.sql.*;
 import java.util.*;
+import java.util.function.Consumer;
 
 
 /**
@@ -10,7 +14,7 @@ import java.util.*;
  * @author Johan Hernandez
  * @version 1.2.0
  */
-public class DatabaseDriver {
+public class DatabaseDriver implements PropertyChangeListener {
     /**
      * The constant PROJECT_TABLE.
      */
@@ -61,6 +65,7 @@ public class DatabaseDriver {
      */
     // TODO: may get rid of this and replace with methods to execute SQL queries
     private Map<Integer, Project> myProjectMap;
+    private Map<String, Consumer<PropertyChangeEvent>> myMappings;
 
     /**
      * Gets the only instance of this class.
@@ -90,6 +95,34 @@ public class DatabaseDriver {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        myMappings = new HashMap<>();
+        setUpMappings();
+    }
+    private void setUpMappings() {
+        myMappings.put(PropertyChanges.TASK_TITLE_CHANGE, this::updateTaskTitle);
+        myMappings.put(PropertyChanges.TASK_STATUS_CHANGE, this::updateTaskStatus);
+        myMappings.put(PropertyChanges.PROJECT_TITLE_CHANGE, this::updateProjectTitle);
+        myMappings.put(PropertyChanges.PROJECT_DESCRIPTION_CHANGE, this::updateProjectDesc);
+    }
+    private void updateTaskTitle(PropertyChangeEvent theEvent) {
+        String oldTitle = (String)theEvent.getOldValue();
+        String newTitle = (String)theEvent.getNewValue();
+        try {
+            PreparedStatement ps = myConnection.prepareStatement("UPDATE Tasks SET name='"+newTitle+"' WHERE name='"+oldTitle+"'");
+            ps.addBatch();
+            ps.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void updateTaskStatus(PropertyChangeEvent theEvent) {
+
+    }
+    private void updateProjectTitle(PropertyChangeEvent theEvent) {
+
+    }
+    private void updateProjectDesc(PropertyChangeEvent theEvent) {
+
     }
 
     /**
@@ -114,7 +147,7 @@ public class DatabaseDriver {
             TaskStatus s;
             s = switch (status) {
                 case "UNFINISHED" -> TaskStatus.UNFINISHED;
-                case "INPROGRESS" -> TaskStatus.IN_PROGRESS;
+                case "INPROGRESS" -> TaskStatus.INPROGRESS;
                 case "FINISHED" -> TaskStatus.FINISHED;
                 default -> throw new SQLDataException("SQL database has illegal data, may be corrupted.");
             };
@@ -170,6 +203,7 @@ public class DatabaseDriver {
             Statement s = myConnection.createStatement();
             ResultSet result = s.executeQuery("SELECT project_id FROM Projects WHERE name='" + theProject.getTitle() + "'");
             int newProjectID = result.getInt(PROJECT_ID_COLUMN);
+            myProjectMap.put(newProjectID, theProject);
             for (final Task t : tasks) {
                 statement = myConnection.prepareStatement("INSERT INTO Tasks(name, status, project_id) VALUES( ?, ?, ?)");
                 statement.setString(1, t.getTitle());
@@ -179,19 +213,13 @@ public class DatabaseDriver {
                 statement.executeBatch();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
+            out = false;
         }
         return out;
     }
-
-// TESTING
-
-//    public static void main(String[] args) throws SQLException {
-//        DatabaseDriver d = DatabaseDriver.getInstance();
-//        Project test = new Project("TEST", "to test");
-//        test.addTask(new Task("TASK1"));
-//        test.addTask(new Task("TASK2"));
-//        test.addTask(new Task("TASK3", TaskStatus.FINISHED));
-//        d.addProject(test);
-//    }
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        myMappings.get(evt.getPropertyName()).accept(evt);
+    }
 }

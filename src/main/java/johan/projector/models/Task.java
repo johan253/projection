@@ -1,5 +1,8 @@
 package johan.projector.models;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 /**
  * This class represents a Task, that should be displayed with its corresponding Project.
  *
@@ -14,7 +17,8 @@ public class Task {
     /**
      * Stores the task as a String
      */
-    private final String myTitle;
+    private String myTitle;
+    private PropertyChangeSupport myPcs;
 
     /**
      * Constructor accepts a String to be assigned to this Task.
@@ -34,6 +38,7 @@ public class Task {
     public Task(final String theTitle, final TaskStatus theStatus) {
         myTitle = theTitle;
         myTaskStatus = theStatus;
+        myPcs = new PropertyChangeSupport(this);
     }
 
     /**
@@ -42,8 +47,13 @@ public class Task {
      * @param otherTask the Task being copied
      */
     public Task(final Task otherTask) {
-        myTitle = otherTask.getTitle();
-        myTaskStatus = otherTask.getStatus();
+        this(otherTask.getTitle(), otherTask.getStatus());
+    }
+    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+        myPcs.addPropertyChangeListener(theListener);
+    }
+    public void removePropertyChangeListener(final PropertyChangeListener theListener) {
+        myPcs.removePropertyChangeListener(theListener);
     }
 
     /**
@@ -63,19 +73,20 @@ public class Task {
     public String getTitle() {
         return myTitle;
     }
-
-    /**
-     * Sets the status of this Task to "In Progress"
-     */
-    public void setInProgress() {
-        myTaskStatus = TaskStatus.IN_PROGRESS;
+    public void setTitle(final String theTitle) {
+        myPcs.firePropertyChange(PropertyChanges.TASK_TITLE_CHANGE, myTitle, theTitle);
+        myTitle = theTitle;
+        //TODO add constant names for property changes
     }
 
     /**
-     * Sets the status of this Task to "Finished".
+     * Sets the status of this Task to the given status
+     *
+     * @param theStatus is the new status of this Task
      */
-    public void setFinished() {
-        myTaskStatus = TaskStatus.FINISHED;
+    public void setStatus(final TaskStatus theStatus) {
+        myPcs.firePropertyChange(PropertyChanges.TASK_STATUS_CHANGE, myTaskStatus, theStatus);
+        myTaskStatus = theStatus;
     }
 
     /**

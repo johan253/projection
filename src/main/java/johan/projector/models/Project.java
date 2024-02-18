@@ -1,5 +1,7 @@
 package johan.projector.models;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 /**
@@ -21,6 +23,7 @@ public class Project {
      * The Tasks associated with this project
      */
     private Map<TaskStatus, List<Task>> myTasks;
+    private PropertyChangeSupport myPcs;
 
     /**
      * Instantiates a new Project.
@@ -42,8 +45,15 @@ public class Project {
         myDescription = theDescription;
         myTasks = new HashMap<>();
         myTasks.put(TaskStatus.UNFINISHED, new ArrayList<>());
-        myTasks.put(TaskStatus.IN_PROGRESS, new ArrayList<>());
+        myTasks.put(TaskStatus.INPROGRESS, new ArrayList<>());
         myTasks.put(TaskStatus.FINISHED, new ArrayList<>());
+        myPcs = new PropertyChangeSupport(this);
+    }
+    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+        myPcs.addPropertyChangeListener(theListener);
+    }
+    public void removePropertyChangeListener(final PropertyChangeListener theListener) {
+        myPcs.removePropertyChangeListener(theListener);
     }
 
     /**
@@ -54,6 +64,10 @@ public class Project {
     public String getTitle() {
         return myTitle;
     }
+    public void setTitle(final String theTitle) {
+        myPcs.firePropertyChange(PropertyChanges.PROJECT_TITLE_CHANGE, myTitle, theTitle);
+        myTitle = theTitle;
+    }
 
     /**
      * Gets the description of this Project.
@@ -62,6 +76,10 @@ public class Project {
      */
     public String getDescription() {
         return myDescription;
+    }
+    public void setDescription(final String theDescription) {
+        myPcs.firePropertyChange(PropertyChanges.PROJECT_DESCRIPTION_CHANGE, myDescription, theDescription);
+        myDescription = theDescription;
     }
     public List<Task> getAllTasks() {
         List<Task> out = new ArrayList<>();
@@ -101,10 +119,10 @@ public class Project {
      * @return the in progress tasks
      */
     public List<Task> getInProgressTasks() {
-        if (myTasks.get(TaskStatus.IN_PROGRESS) == null) {
+        if (myTasks.get(TaskStatus.INPROGRESS) == null) {
             return null;
         }
-        return new ArrayList<>(myTasks.get(TaskStatus.IN_PROGRESS));
+        return new ArrayList<>(myTasks.get(TaskStatus.INPROGRESS));
     }
 
     /**

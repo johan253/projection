@@ -14,7 +14,7 @@ public enum TaskStatus {
     /**
      * Used to mark when a Task is In Progress
      */
-    IN_PROGRESS,
+    INPROGRESS,
     /**
      * Used to mark when a Task is Finished
      */
