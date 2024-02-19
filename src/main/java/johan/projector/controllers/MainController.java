@@ -87,7 +87,6 @@ public class MainController implements Initializable {
             projectSelector.getValue().setTitle(newTitle);
             projectSelector.getValue().setDescription(newDesc);
             stage.hide();
-            refreshData();
         });
         vbox.getChildren().addAll(title, description, errorLabel, submit);
 
@@ -95,6 +94,7 @@ public class MainController implements Initializable {
         stage.setTitle("Edit Project");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/logo.png"))));
         stage.setScene(scene);
+        stage.setOnHidden(e -> refreshData());
         stage.show();
     }
     @FXML
