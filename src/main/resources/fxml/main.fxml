@@ -21,7 +21,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </ChoiceBox>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Create Task" wrapText="true">
+            <Button fx:id="createTaskButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createTaskClick" text="Create Task" wrapText="true">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="LIST" />
                </graphic>
@@ -29,7 +29,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Rename">
+            <Button fx:id="renameProjectButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#renameProjectClick" text="Rename">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="PENCIL" />
                </graphic>
@@ -37,7 +37,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="DELETE">
+            <Button fx:id="deleteProjectButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteProjectClick" text="DELETE">
                <graphic>
                   <FontAwesomeIconView fill="RED" glyphName="TRASH" />
                </graphic>
