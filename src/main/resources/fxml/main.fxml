@@ -3,12 +3,10 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -18,29 +16,36 @@
       <VBox prefHeight="200.0" prefWidth="100.0" styleClass="menu_container" stylesheets="@../styles/menu.css" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="welcomeLabel" prefHeight="80.0" prefWidth="100.0" text="Welcome to Projector!" wrapText="true" />
-            <Accordion styleClass="project_accordion">
-              <panes>
-                <TitledPane styleClass="project_dropdown" text="Project 1">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </TitledPane>
-                <TitledPane styleClass="project_dropdown" text="Project 2">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </TitledPane>
-                <TitledPane styleClass="project_dropdown" text="Project 3">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </TitledPane>
-              </panes>
+            <ChoiceBox fx:id="projectSelector" prefWidth="150.0">
                <VBox.margin>
-                  <Insets />
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
-            </Accordion>
-            <Button fx:id="addProjectButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addProjectClick" text="Create">
+            </ChoiceBox>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Create Task" wrapText="true">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="LIST" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Button>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Rename">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="PENCIL" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Button>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="DELETE">
+               <graphic>
+                  <FontAwesomeIconView fill="RED" glyphName="TRASH" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="addProjectButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addProjectClick" text="Create Project" wrapText="true">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>

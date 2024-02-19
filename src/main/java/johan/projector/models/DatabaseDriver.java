@@ -1,5 +1,7 @@
 package johan.projector.models;
 
+import javafx.scene.chart.PieChart;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Executable;
@@ -116,13 +118,38 @@ public class DatabaseDriver implements PropertyChangeListener {
         }
     }
     private void updateTaskStatus(PropertyChangeEvent theEvent) {
+        String name = ((Task)theEvent.getSource()).getTitle();
+        String newStatus = (String)theEvent.getNewValue();
+        try {
+            PreparedStatement ps = myConnection.prepareStatement("UPDATE Tasks SET status='"+newStatus+"' WHERE name='"+name+"'");
+            ps.addBatch();
+            ps.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
     private void updateProjectTitle(PropertyChangeEvent theEvent) {
-
+        String oldTitle = (String)theEvent.getOldValue();
+        String newTitle = (String)theEvent.getNewValue();
+        try {
+            PreparedStatement ps = myConnection.prepareStatement("UPDATE Projects SET name='"+newTitle+"' WHERE name='"+oldTitle+"'");
+            ps.addBatch();
+            ps.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     private void updateProjectDesc(PropertyChangeEvent theEvent) {
-
+        String name = ((Project)theEvent.getSource()).getTitle();
+        String newDescription = (String)theEvent.getNewValue();
+        try {
+            PreparedStatement ps = myConnection.prepareStatement("UPDATE Projects SET description='"+newDescription+"' WHERE name='"+name+"'");
+            ps.addBatch();
+            ps.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

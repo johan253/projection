@@ -85,7 +85,7 @@ public class Task {
      * @param theStatus is the new status of this Task
      */
     public void setStatus(final TaskStatus theStatus) {
-        myPcs.firePropertyChange(PropertyChanges.TASK_STATUS_CHANGE, myTaskStatus, theStatus);
+        myPcs.firePropertyChange(PropertyChanges.TASK_STATUS_CHANGE, myTitle, theStatus);
         myTaskStatus = theStatus;
     }
 

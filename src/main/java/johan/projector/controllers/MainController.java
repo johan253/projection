@@ -1,18 +1,14 @@
 package johan.projector.controllers;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import johan.projector.App;
 import johan.projector.models.DatabaseDriver;
 import johan.projector.models.Project;
 
@@ -29,19 +25,25 @@ public class MainController implements Initializable {
     private Label currentProjectTitleLabel;
     @FXML
     private Label currentProjectDescriptionLabel;
+    @FXML
+    private ChoiceBox<String> projectSelector;
     private List<PieChart.Data> taskData;
     private final DatabaseDriver myDatabaseDriver = DatabaseDriver.getInstance();
+    private List<Project> myProjects;
+    private List<TitledPane> myProjectPanes;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         taskData = new ArrayList<>();
-        initData();
-        pieChart.setData(FXCollections.observableList(taskData));
+        myProjects = myDatabaseDriver.getAllProjects();
+        projectSelector.setItems(FXCollections.observableList(myProjects.stream().map(Project::getTitle).toList()));
+        projectSelector.setValue(myProjects.get(0).getTitle());
+        projectSelector.setOnAction(e -> refreshData());
+        refreshData();
     }
-    private void initData() {
+    private void refreshData() {
         taskData.clear();
-        //TODO: add ability to select Project to display Data
-        Project project = myDatabaseDriver.getProject("PROJECTion");
+        Project project = myDatabaseDriver.getProject(projectSelector.getValue());
         currentProjectTitleLabel.setText("Current Project: " + project.getTitle());
         currentProjectDescriptionLabel.setText(project.getDescription());
         int unfinished = project.getUnfinishedTasks().size();
@@ -49,7 +51,10 @@ public class MainController implements Initializable {
         int finished = project.getFinishedTasks().size();
         taskData.add(new PieChart.Data("Unfinished", unfinished));
         taskData.add(new PieChart.Data("Finished", finished));
-        taskData.add(new PieChart.Data("inprogress", inprogress));
+        taskData.add(new PieChart.Data("In progress", inprogress));
+        pieChart.getData().clear();
+        pieChart.getData().addAll(taskData);
+        //pieChart.setData(FXCollections.observableList(taskData));
     }
 
     @FXML
