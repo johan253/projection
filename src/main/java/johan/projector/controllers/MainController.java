@@ -32,21 +32,21 @@ public class MainController implements Initializable {
     @FXML
     private Label currentProjectDescriptionLabel;
     @FXML
-    private ChoiceBox<Project> projectSelector;
+    private ChoiceBox<String> projectSelector;
     private List<PieChart.Data> taskData;
     private final DatabaseDriver myDatabaseDriver = DatabaseDriver.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         taskData = new ArrayList<>();
-        projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects()));
-        projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0));
+        projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
+        projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0).getTitle());
         projectSelector.setOnAction(e -> refreshData());
         refreshData();
     }
     private void refreshData() {
         taskData.clear();
-        Project project = myDatabaseDriver.getProject(projectSelector.getValue().getTitle());
+        Project project = myDatabaseDriver.getProject(projectSelector.getValue());
         currentProjectTitleLabel.setText("Current Project: " + project.getTitle());
         currentProjectDescriptionLabel.setText(project.getDescription());
         int unfinished = project.getUnfinishedTasks().size();
@@ -71,10 +71,10 @@ public class MainController implements Initializable {
         vbox.setAlignment(Pos.CENTER);
 
         TextField title = new TextField();
-        title.setText(projectSelector.getValue().getTitle());
+        title.setText(projectSelector.getValue());
 
         TextField description = new TextField();
-        description.setText(projectSelector.getValue().getDescription());
+        description.setText(myDatabaseDriver.getProject(projectSelector.getValue()).getDescription());
 
         Label errorLabel = new Label("");
         errorLabel.setStyle("-fx-text-fill: #ff0000");
@@ -84,8 +84,12 @@ public class MainController implements Initializable {
         submit.setOnAction(e -> {
             String newTitle = title.getText();
             String newDesc = description.getText();
-            projectSelector.getValue().setTitle(newTitle);
-            projectSelector.getValue().setDescription(newDesc);
+            myDatabaseDriver.getProject(projectSelector.getValue()).setDescription(newDesc);
+            myDatabaseDriver.getProject(projectSelector.getValue()).setTitle(newTitle);
+            projectSelector.setOnAction(a -> System.out.println("resetting selectable projects..."));
+            projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
+            projectSelector.setOnAction(b -> refreshData());
+            projectSelector.setValue(newTitle);
             stage.hide();
         });
         vbox.getChildren().addAll(title, description, errorLabel, submit);
@@ -94,7 +98,7 @@ public class MainController implements Initializable {
         stage.setTitle("Edit Project");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/logo.png"))));
         stage.setScene(scene);
-        stage.setOnHidden(e -> refreshData());
+        //stage.setOnHidden(e -> refreshData());
         stage.show();
     }
     @FXML

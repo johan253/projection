@@ -159,6 +159,7 @@ public class DatabaseDriver implements PropertyChangeListener {
      * @throws SQLException When database has Illegal data, or may be corrupted
      */
     private void fetchAllData() throws SQLException {
+        myProjectMap.clear();
         Statement statement = myConnection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + PROJECT_TABLE);
         while (resultSet.next()) {
@@ -252,5 +253,10 @@ public class DatabaseDriver implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         myMappings.get(evt.getPropertyName()).accept(evt);
+//        try {
+//            fetchAllData();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }
