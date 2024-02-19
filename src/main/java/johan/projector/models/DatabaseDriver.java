@@ -99,6 +99,7 @@ public class DatabaseDriver implements PropertyChangeListener {
         }
         myMappings = new HashMap<>();
         setUpMappings();
+
     }
     private void setUpMappings() {
         myMappings.put(PropertyChanges.TASK_TITLE_CHANGE, this::updateTaskTitle);
@@ -164,21 +165,24 @@ public class DatabaseDriver implements PropertyChangeListener {
             String title = resultSet.getString(PROJECT_NAME_COLUMN);
             String description = resultSet.getString(PROJECT_DESCRIPTION_COLUMN);
             Integer id = resultSet.getInt(PROJECT_ID_COLUMN);
-            myProjectMap.put(id, new Project(title, description));
+            Project p = new Project(title, description);
+            p.addPropertyChangeListener(this);
+            myProjectMap.put(id, p);
         }
         resultSet = statement.executeQuery("SELECT * FROM " + TASKS_TABLE);
         while (resultSet.next()) {
             String title = resultSet.getString(TASK_NAME_COLUMN);
             String status = resultSet.getString(TASK_STATUS_COLUMN);
             Integer correspondingProjectID = resultSet.getInt(TASK_PROJECT_COLUMN);
-            TaskStatus s;
-            s = switch (status) {
+            TaskStatus s = switch (status) {
                 case "UNFINISHED" -> TaskStatus.UNFINISHED;
                 case "INPROGRESS" -> TaskStatus.INPROGRESS;
                 case "FINISHED" -> TaskStatus.FINISHED;
                 default -> throw new SQLDataException("SQL database has illegal data, may be corrupted.");
             };
-            myProjectMap.get(correspondingProjectID).addTask(new Task(title, s));
+            Task t = new Task(title, s);
+            t.addPropertyChangeListener(this);
+            myProjectMap.get(correspondingProjectID).addTask(t);
         }
     }
 

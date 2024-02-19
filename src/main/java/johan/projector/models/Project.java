@@ -23,7 +23,7 @@ public class Project {
      * The Tasks associated with this project
      */
     private Map<TaskStatus, List<Task>> myTasks;
-    private PropertyChangeSupport myPcs;
+    private final PropertyChangeSupport myPcs;
 
     /**
      * Instantiates a new Project.
@@ -153,6 +153,7 @@ public class Project {
      */
     @Override
     public String toString() {
-        return "Project: " + myTitle + " - " + myDescription + '\'' + " - Tasks:\n" + myTasks + "\n";
+        return getTitle();
+        //return "Project: " + myTitle + " - " + myDescription + '\'' + " - Tasks:\n" + myTasks + "\n";
     }
 }

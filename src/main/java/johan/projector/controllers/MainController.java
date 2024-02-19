@@ -4,15 +4,19 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import johan.projector.models.DatabaseDriver;
 import johan.projector.models.Project;
 
+import javax.swing.text.Position;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
@@ -28,23 +32,21 @@ public class MainController implements Initializable {
     @FXML
     private Label currentProjectDescriptionLabel;
     @FXML
-    private ChoiceBox<String> projectSelector;
+    private ChoiceBox<Project> projectSelector;
     private List<PieChart.Data> taskData;
     private final DatabaseDriver myDatabaseDriver = DatabaseDriver.getInstance();
-    private List<Project> myProjects;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         taskData = new ArrayList<>();
-        myProjects = myDatabaseDriver.getAllProjects();
-        projectSelector.setItems(FXCollections.observableList(myProjects.stream().map(Project::getTitle).toList()));
-        projectSelector.setValue(myProjects.get(0).getTitle());
+        projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects()));
+        projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0));
         projectSelector.setOnAction(e -> refreshData());
         refreshData();
     }
     private void refreshData() {
         taskData.clear();
-        Project project = myDatabaseDriver.getProject(projectSelector.getValue());
+        Project project = myDatabaseDriver.getProject(projectSelector.getValue().getTitle());
         currentProjectTitleLabel.setText("Current Project: " + project.getTitle());
         currentProjectDescriptionLabel.setText(project.getDescription());
         int unfinished = project.getUnfinishedTasks().size();
@@ -61,8 +63,39 @@ public class MainController implements Initializable {
 
     }
     @FXML
-    public void renameProjectClick() {
+    public void editProjectClick() {
+        VBox vbox = new VBox();
+        Stage stage = new Stage();
+        vbox.setPrefWidth(500.0);
+        vbox.setPrefHeight(200.0);
+        vbox.setAlignment(Pos.CENTER);
 
+        TextField title = new TextField();
+        title.setText(projectSelector.getValue().getTitle());
+
+        TextField description = new TextField();
+        description.setText(projectSelector.getValue().getDescription());
+
+        Label errorLabel = new Label("");
+        errorLabel.setStyle("-fx-text-fill: #ff0000");
+        errorLabel.setWrapText(true);
+
+        Button submit = new Button("Done");
+        submit.setOnAction(e -> {
+            String newTitle = title.getText();
+            String newDesc = description.getText();
+            projectSelector.getValue().setTitle(newTitle);
+            projectSelector.getValue().setDescription(newDesc);
+            stage.hide();
+            refreshData();
+        });
+        vbox.getChildren().addAll(title, description, errorLabel, submit);
+
+        Scene scene = new Scene(vbox);
+        stage.setTitle("Edit Project");
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/logo.png"))));
+        stage.setScene(scene);
+        stage.show();
     }
     @FXML
     public void deleteProjectClick() {
