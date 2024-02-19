@@ -4,13 +4,13 @@ towards them. Made with the JavaFX library, Projection is a simple yet beautiful
 app.
 
 ### Version
-0.1.1 (prototype)
+0.2.0 (prototype)
 
 ## Built with
 * [JavaFX](https://openjfx.io/) - GUI framework used
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Font Awesome](https://fontawesome.com/) - Icon/Graphic elements
-* [SQLite](https://www.sqlite.org/index.html)(coming soon) - Local Data Management
+* [SQLite](https://www.sqlite.org/index.html) - Local Data Management
 
 ## Contributions
 _Johan Hernandez - Main Developer_
