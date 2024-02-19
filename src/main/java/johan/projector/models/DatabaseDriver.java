@@ -1,10 +1,7 @@
 package johan.projector.models;
 
-import javafx.scene.chart.PieChart;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.reflect.Executable;
 import java.sql.*;
 import java.util.*;
 import java.util.function.Consumer;
@@ -14,7 +11,7 @@ import java.util.function.Consumer;
  * The Driver used for connecting and executing queries to the local SQLite database.
  *
  * @author Johan Hernandez
- * @version 1.2.0
+ * @version 1.5.0
  */
 public class DatabaseDriver implements PropertyChangeListener {
     /**
@@ -67,6 +64,9 @@ public class DatabaseDriver implements PropertyChangeListener {
      */
     // TODO: may get rid of this and replace with methods to execute SQL queries
     private Map<Integer, Project> myProjectMap;
+    /**
+     * Contains mappings of Consumer functions to call when a property change event is received
+     */
     private Map<String, Consumer<PropertyChangeEvent>> myMappings;
 
     /**
@@ -101,12 +101,22 @@ public class DatabaseDriver implements PropertyChangeListener {
         setUpMappings();
 
     }
+
+    /**
+     * Sets up mappings for property change events
+     */
     private void setUpMappings() {
         myMappings.put(PropertyChanges.TASK_TITLE_CHANGE, this::updateTaskTitle);
         myMappings.put(PropertyChanges.TASK_STATUS_CHANGE, this::updateTaskStatus);
         myMappings.put(PropertyChanges.PROJECT_TITLE_CHANGE, this::updateProjectTitle);
         myMappings.put(PropertyChanges.PROJECT_DESCRIPTION_CHANGE, this::updateProjectDesc);
     }
+
+    /**
+     * Updates the title of a task to the SQLite database
+     *
+     * @param theEvent is the property change event when a task title changes
+     */
     private void updateTaskTitle(PropertyChangeEvent theEvent) {
         String oldTitle = (String)theEvent.getOldValue();
         String newTitle = (String)theEvent.getNewValue();
@@ -118,6 +128,11 @@ public class DatabaseDriver implements PropertyChangeListener {
             throw new RuntimeException(e);
         }
     }
+    /**
+     * Updates the status of a task to the SQLite database
+     *
+     * @param theEvent is the property change event when a task status changes
+     */
     private void updateTaskStatus(PropertyChangeEvent theEvent) {
         String name = ((Task)theEvent.getSource()).getTitle();
         String newStatus = (String)theEvent.getNewValue();
@@ -130,6 +145,11 @@ public class DatabaseDriver implements PropertyChangeListener {
         }
 
     }
+    /**
+     * Updates the title of a Project to the SQLite database
+     *
+     * @param theEvent is the property change event when a Project title changes
+     */
     private void updateProjectTitle(PropertyChangeEvent theEvent) {
         String oldTitle = (String)theEvent.getOldValue();
         String newTitle = (String)theEvent.getNewValue();
@@ -141,6 +161,11 @@ public class DatabaseDriver implements PropertyChangeListener {
             throw new RuntimeException(e);
         }
     }
+    /**
+     * Updates the description of a Project to the SQLite database
+     *
+     * @param theEvent is the property change event when a Project description changes
+     */
     private void updateProjectDesc(PropertyChangeEvent theEvent) {
         String name = ((Project)theEvent.getSource()).getTitle();
         String newDescription = (String)theEvent.getNewValue();
@@ -250,13 +275,15 @@ public class DatabaseDriver implements PropertyChangeListener {
         }
         return out;
     }
+
+    /**
+     * Handles when a property change event occurs
+     *
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         myMappings.get(evt.getPropertyName()).accept(evt);
-//        try {
-//            fetchAllData();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 }

@@ -18,7 +18,10 @@ public class Task {
      * Stores the task as a String
      */
     private String myTitle;
-    private PropertyChangeSupport myPcs;
+    /**
+     * Project change support alerts listeners of this object when a certain property changes
+     */
+    private final PropertyChangeSupport myPcs;
 
     /**
      * Constructor accepts a String to be assigned to this Task.
@@ -49,9 +52,21 @@ public class Task {
     public Task(final Task otherTask) {
         this(otherTask.getTitle(), otherTask.getStatus());
     }
+
+    /**
+     * Adds a listener to receive property change events
+     *
+     * @param theListener the listener to be added
+     */
     public void addPropertyChangeListener(final PropertyChangeListener theListener) {
         myPcs.addPropertyChangeListener(theListener);
     }
+
+    /**
+     * Removes a listener from receiving property change events
+     *
+     * @param theListener the listener to be removed
+     */
     public void removePropertyChangeListener(final PropertyChangeListener theListener) {
         myPcs.removePropertyChangeListener(theListener);
     }
@@ -73,10 +88,15 @@ public class Task {
     public String getTitle() {
         return myTitle;
     }
+
+    /**
+     * Sets the title of this Task
+     *
+     * @param theTitle the new title
+     */
     public void setTitle(final String theTitle) {
         myPcs.firePropertyChange(PropertyChanges.TASK_TITLE_CHANGE, myTitle, theTitle);
         myTitle = theTitle;
-        //TODO add constant names for property changes
     }
 
     /**

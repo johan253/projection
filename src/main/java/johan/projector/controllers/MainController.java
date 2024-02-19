@@ -5,37 +5,67 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import johan.projector.models.DatabaseDriver;
 import johan.projector.models.Project;
 
-import javax.swing.text.Position;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * The Main controller for the application. Direct controller for "main.fxml"
+ *
+ * @author Johan Hernandez
+ * @version 2.0.0
+ */
 public class MainController implements Initializable {
+    /**
+     * The add project button injected from the FXML file
+     */
     @FXML
     private Button addProjectButton;
+    /**
+     * The Pie Chart displaying the task data injected from the FXML file
+     */
     @FXML
     private PieChart pieChart;
+    /**
+     * The label displaying the current selected Project. Injected from the FXML file
+     */
     @FXML
     private Label currentProjectTitleLabel;
+    /**
+     * The label displaying the description of the currently selected project. Injected from the FXML file
+     */
     @FXML
     private Label currentProjectDescriptionLabel;
+    /**
+     * The choice box that allows teh user to select different Projects. Injected from the FXML file
+     */
     @FXML
     private ChoiceBox<String> projectSelector;
+    /**
+     * The list of Task data to be attached to the pie chart
+     */
+    //TODO: may get rid of and instead directly add to Pie Chart
     private List<PieChart.Data> taskData;
+    /**
+     * The singleton instance of the Database Driver. Allows interaction and updates to the local SQLite database
+     */
     private final DatabaseDriver myDatabaseDriver = DatabaseDriver.getInstance();
 
+    /**
+     * Declares what happens on initialization of the main.fxml file
+     *
+     * @param url the url of the FXML file this controller is attached to
+     * @param resourceBundle any resources passed down
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         taskData = new ArrayList<>();
@@ -44,6 +74,10 @@ public class MainController implements Initializable {
         projectSelector.setOnAction(e -> refreshData());
         refreshData();
     }
+
+    /**
+     * Refreshes all the data on the dashboard to reflect currently selected Project
+     */
     private void refreshData() {
         taskData.clear();
         Project project = myDatabaseDriver.getProject(projectSelector.getValue());
@@ -58,10 +92,18 @@ public class MainController implements Initializable {
         pieChart.getData().clear();
         pieChart.getData().addAll(taskData);
     }
+
+    /**
+     * Handles a click to the create task button
+     */
     @FXML
     public void createTaskClick() {
 
     }
+
+    /**
+     * Handles a click to the edit project button
+     */
     @FXML
     public void editProjectClick() {
         VBox vbox = new VBox();
@@ -98,14 +140,22 @@ public class MainController implements Initializable {
         stage.setTitle("Edit Project");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/logo.png"))));
         stage.setScene(scene);
-        //stage.setOnHidden(e -> refreshData());
         stage.show();
     }
+
+    /**
+     * Handles a click to the delete project button.
+     */
     @FXML
     public void deleteProjectClick() {
 
     }
 
+    /**
+     * Handles a click to the add project button
+     *
+     * @throws IOException the io exception
+     */
     @FXML
     public void addProjectClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/create-project.fxml"));

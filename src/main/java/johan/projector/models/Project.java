@@ -22,7 +22,10 @@ public class Project {
     /**
      * The Tasks associated with this project
      */
-    private Map<TaskStatus, List<Task>> myTasks;
+    private final Map<TaskStatus, List<Task>> myTasks;
+    /**
+     * The property change support object to send signals to listeners when certain properties change.
+     */
     private final PropertyChangeSupport myPcs;
 
     /**
@@ -49,9 +52,20 @@ public class Project {
         myTasks.put(TaskStatus.FINISHED, new ArrayList<>());
         myPcs = new PropertyChangeSupport(this);
     }
+
+    /**
+     * Adds a listener to receive property change events from this object
+     *
+     * @param theListener the listener object to be added
+     */
     public void addPropertyChangeListener(final PropertyChangeListener theListener) {
         myPcs.addPropertyChangeListener(theListener);
     }
+    /**
+     * Removes a listener from receiving property change events from this object
+     *
+     * @param theListener the listener object to be removed
+     */
     public void removePropertyChangeListener(final PropertyChangeListener theListener) {
         myPcs.removePropertyChangeListener(theListener);
     }
@@ -77,10 +91,22 @@ public class Project {
     public String getDescription() {
         return myDescription;
     }
+
+    /**
+     * Sets the description of this Project
+     *
+     * @param theDescription the new description
+     */
     public void setDescription(final String theDescription) {
         myPcs.firePropertyChange(PropertyChanges.PROJECT_DESCRIPTION_CHANGE, myDescription, theDescription);
         myDescription = theDescription;
     }
+
+    /**
+     * Gets all the Tasks associated with this Project
+     *
+     * @return all the Tasks
+     */
     public List<Task> getAllTasks() {
         List<Task> out = new ArrayList<>();
         for (final TaskStatus s : myTasks.keySet()) {
@@ -88,19 +114,6 @@ public class Project {
         }
         return out;
     }
-//
-//    /**
-//     * Gets the total number of Tasks this project has
-//     *
-//     * @return the number of tasks this Project has
-//     */
-//    public int getTaskCount() {
-//        int temp = 0;
-//        for (final TaskStatus s : myTasks.keySet()) {
-//            temp += myTasks.get(s).size();
-//        }
-//        return temp;
-//    }
     /**
      * Gets the unfinished tasks associated with this Project.
      *
