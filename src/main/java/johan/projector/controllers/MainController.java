@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import johan.projector.models.DatabaseDriver;
 import johan.projector.models.Project;
+import johan.projector.models.TaskStatus;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -95,9 +96,9 @@ public class MainController implements Initializable, PropertyChangeListener {
         Project project = myDatabaseDriver.getProject(projectSelector.getValue());
         currentProjectTitleLabel.setText("Current Project: " + project.getTitle());
         currentProjectDescriptionLabel.setText(project.getDescription());
-        int unfinished = project.getUnfinishedTasks().size();
-        int inprogress = project.getInProgressTasks().size();
-        int finished = project.getFinishedTasks().size();
+        int unfinished = project.getAllTasks().stream().filter(t -> t.getStatus() == TaskStatus.UNFINISHED).toList().size();
+        int inprogress = project.getAllTasks().stream().filter(t -> t.getStatus() == TaskStatus.INPROGRESS).toList().size();
+        int finished = project.getAllTasks().stream().filter(t -> t.getStatus() == TaskStatus.FINISHED).toList().size();
         taskData.add(new PieChart.Data("Unfinished", unfinished));
         taskData.add(new PieChart.Data("Finished", finished));
         taskData.add(new PieChart.Data("In progress", inprogress));
