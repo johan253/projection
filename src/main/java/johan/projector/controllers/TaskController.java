@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class TaskController implements Initializable {
+public class TaskController {
     @FXML
     private Label taskTitleLabel;
     @FXML
@@ -47,8 +47,4 @@ public class TaskController implements Initializable {
         System.out.println("deleting task...");
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println(resourceBundle.toString());
-    }
 }

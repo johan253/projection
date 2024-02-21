@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
@@ -17,6 +18,7 @@ import johan.projector.models.Project;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * The Main controller for the application. Direct controller for "main.fxml"
@@ -50,6 +52,12 @@ public class MainController implements Initializable {
      */
     @FXML
     private ChoiceBox<String> projectSelector;
+    @FXML
+    private VBox unfinishedTasksBox;
+    @FXML
+    private VBox inProgressTasksBox;
+    @FXML
+    private VBox finishedTasksBox;
     /**
      * The list of Task data to be attached to the pie chart
      */
@@ -92,6 +100,34 @@ public class MainController implements Initializable {
         taskData.add(new PieChart.Data("In progress", inprogress));
         pieChart.getData().clear();
         pieChart.getData().addAll(taskData);
+        refreshTasks(project);
+    }
+    private void refreshTasks(final Project theProject) {
+        unfinishedTasksBox.getChildren().clear();
+        inProgressTasksBox.getChildren().clear();
+        finishedTasksBox.getChildren().clear();
+        try {
+            AtomicReference<FXMLLoader> loader = new AtomicReference<>(new FXMLLoader(getClass().getResource("/fxml/task.fxml")));
+            AtomicReference<Parent> p = new AtomicReference<>(loader.get().load());
+            AtomicReference<TaskController> ctrl = new AtomicReference<>(loader.get().getController());
+            theProject.getAllTasks().forEach(t -> {
+                ctrl.get().setTask(t);
+                switch(t.getStatus()) {
+                    case UNFINISHED -> unfinishedTasksBox.getChildren().add(p.get());
+                    case INPROGRESS -> inProgressTasksBox.getChildren().add(p.get());
+                    default -> finishedTasksBox.getChildren().add(p.get());
+                }
+                loader.set(new FXMLLoader(getClass().getResource("/fxml/task.fxml")));
+                try {
+                    p.set(loader.get().load());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                ctrl.set(loader.get().getController());
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
