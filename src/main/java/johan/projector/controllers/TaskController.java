@@ -2,20 +2,13 @@ package johan.projector.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import johan.projector.models.DatabaseDriver;
-import johan.projector.models.Project;
 import johan.projector.models.Task;
 import johan.projector.models.TaskStatus;
 
-import java.beans.PropertyChangeSupport;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class TaskController {
     @FXML
