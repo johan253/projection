@@ -20,15 +20,17 @@ public class ProjectController {
 
     @FXML
     public void attemptCreate() {
-        if (titleInput.getText().length() < 3) {
+        if (titleInput.getText().trim().length() < 3) {
             errorLabel.setText("Error: project title must be at LEAST 3 characters long");
-        }
-        Project p = new Project(titleInput.getText(), descriptionInput.getText());
-        boolean success = DatabaseDriver.getInstance().addProject(p);
-        if (!success) {
-            errorLabel.setText("Error in creating project");
+            errorLabel.setStyle("-fx-text-fill: #FF0000");
         } else {
-            createButton.getScene().getWindow().hide();
+            Project p = new Project(titleInput.getText(), descriptionInput.getText());
+            boolean success = DatabaseDriver.getInstance().addProject(p);
+            if (!success) {
+                errorLabel.setText("Error in creating project");
+            } else {
+                createButton.getScene().getWindow().hide();
+            }
         }
     }
 }

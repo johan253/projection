@@ -1,0 +1,53 @@
+.container {
+    -fx-background-color: #2020AA;
+}
+.container .title-label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-background-color: rgba(0,0,125,0.4);
+}
+.contents-container .label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Arial Rounded MT Bold";
+}
+.contents-container .button{
+    -fx-background-color: #2424FF;
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(two-pass-box, #202066, 5, 0, 2, 2);
+    -fx-alignment: center;
+}
+.contents-container .button:hover {
+    -fx-cursor: hand;
+}
+.contents-container .text-field {
+    -fx-border-color: grey;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+/*.contents-container .text-field:focused {*/
+/*    -fx-background-color: -fx-focus-color, -fx-background ;*/
+/*    -fx-text-fill: black;*/
+/*}*/
+.text-area {
+    -fx-background-color: rgba(0,0,125,0.4);
+    -fx-background-radius: 5deg;
+    -fx-border-color: grey;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-radius: 5deg;
+    -fx-text-fill: white;
+}
+/*.text-area:focused {*/
+/*    -fx-background-color: -fx-focus-color, -fx-background ;*/
+/*    -fx-text-fill: black;*/
+/*}*/
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}

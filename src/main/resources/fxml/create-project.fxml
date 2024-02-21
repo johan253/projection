@@ -9,18 +9,21 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="johan.projector.controllers.ProjectController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" styleClass="container" stylesheets="@../styles/create-project.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="johan.projector.controllers.ProjectController">
    <top>
-      <Label maxWidth="1.7976931348623157E308" prefHeight="45.0" prefWidth="600.0" text="Create New Project:" BorderPane.alignment="CENTER">
+      <Label maxWidth="1.7976931348623157E308" prefHeight="45.0" prefWidth="600.0" styleClass="title-label" text="Create New Project:" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            <Insets />
          </BorderPane.margin>
          <graphic>
-            <FontAwesomeIconView glyphName="PLUS" />
-         </graphic></Label>
+            <FontAwesomeIconView fill="WHITE" glyphName="PLUS" />
+         </graphic>
+         <padding>
+            <Insets left="5.0" />
+         </padding></Label>
    </top>
    <center>
-      <VBox BorderPane.alignment="CENTER">
+      <VBox styleClass="contents-container" BorderPane.alignment="CENTER">
          <children>
             <Label text="Title">
                <VBox.margin>
