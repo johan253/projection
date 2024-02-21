@@ -275,6 +275,9 @@ public class DatabaseDriver implements PropertyChangeListener {
         }
         return out;
     }
+    public void deleteProject(final String theProject) {
+        System.out.println("deleting project '" + theProject + "'");
+    }
 
     /**
      * Handles when a property change event occurs
