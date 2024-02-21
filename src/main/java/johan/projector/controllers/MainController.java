@@ -69,7 +69,8 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         taskData = new ArrayList<>();
-        projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
+        projectSelector.setItems(FXCollections.observableList(
+                myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
         projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0).getTitle());
         projectSelector.setOnAction(e -> refreshData());
         refreshData();
@@ -106,17 +107,24 @@ public class MainController implements Initializable {
      */
     @FXML
     public void editProjectClick() {
+        // container
         VBox vbox = new VBox();
         Stage stage = new Stage();
         vbox.setPrefWidth(500.0);
         vbox.setPrefHeight(200.0);
         vbox.setAlignment(Pos.CENTER);
 
+        // title label and text-field
         TextField title = new TextField();
         title.setText(projectSelector.getValue());
+        Label titleLabel = new Label("Title:");
+        titleLabel.setStyle("-fx-font-family: 'Arial Rounded MT Bold'");
 
+        // description label and text-field
         TextField description = new TextField();
         description.setText(myDatabaseDriver.getProject(projectSelector.getValue()).getDescription());
+        Label descriptionLabel = new Label("Description: ");
+        descriptionLabel.setStyle("-fx-font-family: 'Arial Rounded MT Bold'");
 
         Label errorLabel = new Label("");
         errorLabel.setStyle("-fx-text-fill: #ff0000");
@@ -134,7 +142,7 @@ public class MainController implements Initializable {
             projectSelector.setValue(newTitle);
             stage.hide();
         });
-        vbox.getChildren().addAll(title, description, errorLabel, submit);
+        vbox.getChildren().addAll(titleLabel, title, descriptionLabel, description, errorLabel, submit);
 
         Scene scene = new Scene(vbox);
         stage.setTitle("Edit Project");
@@ -163,7 +171,13 @@ public class MainController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(scene);
         addProjectButton.setDisable(true);
-        stage.setOnHidden((e) -> addProjectButton.setDisable(false));
+        stage.setOnHidden((e) -> {
+            addProjectButton.setDisable(false);
+            projectSelector.setOnAction(a -> System.out.println("Creating project..."));
+            projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
+            projectSelector.setOnAction(b -> refreshData());
+            projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0).getTitle());
+        });
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/logo.png"))));
         stage.setTitle("Create new Porject");
         stage.setX(addProjectButton.getScene().getWindow().getX() + 50);

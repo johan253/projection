@@ -45,7 +45,8 @@ public class Project {
      */
     public Project(final String theTitle, final String theDescription) {
         myTitle = theTitle;
-        myDescription = theDescription;
+        String d = theDescription.isBlank() ? "N/A" : theDescription;
+        myDescription = d;
         myTasks = new HashMap<>();
         myTasks.put(TaskStatus.UNFINISHED, new ArrayList<>());
         myTasks.put(TaskStatus.INPROGRESS, new ArrayList<>());
