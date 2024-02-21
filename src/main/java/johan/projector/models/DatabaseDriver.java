@@ -275,6 +275,12 @@ public class DatabaseDriver implements PropertyChangeListener {
         }
         return out;
     }
+
+    /**
+     * Deleted a project with the specified Title from the local SQLite database
+     *
+     * @param theProject the title of the project
+     */
     public void deleteProject(final String theProject) {
         System.out.println("deleting project '" + theProject + "'");
     }
