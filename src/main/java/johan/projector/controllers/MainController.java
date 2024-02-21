@@ -157,7 +157,7 @@ public class MainController implements Initializable {
     @FXML
     public void deleteProjectClick() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm Deletion of Project '" + projectSelector.getValue() + "'");
+        alert.setTitle("'" + projectSelector.getValue() + "'");
         alert.setContentText("Are you sure you would like to delete this project?\n" +
                              "There is no way to undo this action.");
         alert.setOnHidden(e -> {
