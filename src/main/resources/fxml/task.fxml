@@ -22,7 +22,7 @@
             <HBox prefHeight="50.0" prefWidth="200.0">
                <children>
                   <Label maxHeight="1.7976931348623157E308" text="Status: " />
-                  <ChoiceBox fx:id="statusChoicebox" prefWidth="75.0">
+                  <ChoiceBox fx:id="statusChoiceBox" prefWidth="75.0">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
                      </HBox.margin>
