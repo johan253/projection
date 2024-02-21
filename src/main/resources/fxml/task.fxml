@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="johan.projector.controllers.TaskController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" styleClass="task-container" stylesheets="@../styles/task-mini.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="johan.projector.controllers.TaskController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -38,6 +37,6 @@
       </VBox>
    </center>
    <left>
-      <Pane maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="15.0" BorderPane.alignment="CENTER" />
+      <Pane maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="15.0" styleClass="pane" BorderPane.alignment="CENTER" />
    </left>
 </BorderPane>

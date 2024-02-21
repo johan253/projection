@@ -1,6 +1,7 @@
 package johan.projector.controllers;
 
 import javafx.collections.FXCollections;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,6 +16,8 @@ import javafx.stage.Stage;
 import johan.projector.models.DatabaseDriver;
 import johan.projector.models.Project;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -26,7 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Johan Hernandez
  * @version 2.0.0
  */
-public class MainController implements Initializable {
+public class MainController implements Initializable, PropertyChangeListener {
     /**
      * The add project button injected from the FXML file
      */
@@ -110,6 +113,7 @@ public class MainController implements Initializable {
             AtomicReference<FXMLLoader> loader = new AtomicReference<>(new FXMLLoader(getClass().getResource("/fxml/task.fxml")));
             AtomicReference<Parent> p = new AtomicReference<>(loader.get().load());
             AtomicReference<TaskController> ctrl = new AtomicReference<>(loader.get().getController());
+            ctrl.get().addPropertyChangeListener(this);
             theProject.getAllTasks().forEach(t -> {
                 ctrl.get().setTask(t);
                 switch(t.getStatus()) {
@@ -123,6 +127,7 @@ public class MainController implements Initializable {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+                ctrl.get().addPropertyChangeListener(this);
                 ctrl.set(loader.get().getController());
             });
         } catch (IOException e) {
@@ -228,5 +233,10 @@ public class MainController implements Initializable {
         stage.setX(addProjectButton.getScene().getWindow().getX() + 50);
         stage.setY(addProjectButton.getScene().getWindow().getY() + 50);
         stage.show();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        refreshData();
     }
 }

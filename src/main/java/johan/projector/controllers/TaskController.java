@@ -10,6 +10,8 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import johan.projector.models.Task;
 import johan.projector.models.TaskStatus;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,6 +24,7 @@ public class TaskController {
     @FXML
     private FontAwesomeIconView deleteIcon;
     private Task myTask;
+    private final PropertyChangeSupport myPcs = new PropertyChangeSupport(this);
     public void setTask(final Task theTask) {
         deleteIcon.setOnMouseClicked(e -> deleteClick());
         myTask = theTask;
@@ -34,6 +37,9 @@ public class TaskController {
         });
         statusChoiceBox.setOnAction(e -> changeStatus());
     }
+    public void addPropertyChangeListener(PropertyChangeListener theListener) {
+        myPcs.addPropertyChangeListener(theListener);
+    }
 
     public void changeStatus() {
         TaskStatus status = switch (statusChoiceBox.getValue()) {
@@ -42,6 +48,7 @@ public class TaskController {
             default -> TaskStatus.UNFINISHED;
         };
         myTask.setStatus(status);
+        myPcs.firePropertyChange("", null, null);
     }
     private void deleteClick() {
         System.out.println("deleting task...");

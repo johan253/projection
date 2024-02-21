@@ -157,7 +157,7 @@ public class Project {
      * @param theTask the task
      */
     public void addTask(final Task theTask) {
-        myTasks.get(theTask.getStatus()).add(new Task(theTask));
+        myTasks.get(theTask.getStatus()).add(theTask);
     }
 
     /**

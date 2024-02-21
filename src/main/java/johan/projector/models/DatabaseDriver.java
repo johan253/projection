@@ -135,7 +135,8 @@ public class DatabaseDriver implements PropertyChangeListener {
      */
     private void updateTaskStatus(PropertyChangeEvent theEvent) {
         String name = ((Task)theEvent.getSource()).getTitle();
-        String newStatus = (String)theEvent.getNewValue();
+        String newStatus = ((TaskStatus)theEvent.getNewValue()).name();
+        System.out.println(newStatus);
         try {
             PreparedStatement ps = myConnection.prepareStatement("UPDATE Tasks SET status='"+newStatus+"' WHERE name='"+name+"'");
             ps.addBatch();

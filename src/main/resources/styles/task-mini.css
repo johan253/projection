@@ -1,0 +1,15 @@
+.pane {
+    -fx-background-color: #2020AA;
+    -fx-background-radius: 5deg;
+}
+.task-container {
+    -fx-background-radius: 5deg;
+    -fx-border-radius: 5deg;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: grey;
+}
+.choice-box {
+    -fx-background-color: grey;
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(two-pass-box, #202066, 5, 0, 2, 2);
+}
