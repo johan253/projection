@@ -1,6 +1,6 @@
 .pane {
-    -fx-background-color: #2020AA;
-    -fx-background-radius: 5deg;
+    -fx-background-color: #2424FF;
+    -fx-background-radius: 5deg 0 0 5deg;
 }
 .task-container {
     -fx-background-radius: 5deg;
@@ -9,7 +9,17 @@
     -fx-border-color: grey;
 }
 .choice-box {
-    -fx-background-color: grey;
+    -fx-border-color: grey;
+    -fx-border-radius: 2.5deg;
+    -fx-background-color: #FFFFFF;
     -fx-text-fill: #FFFFFF;
-    -fx-effect: dropshadow(two-pass-box, #202066, 5, 0, 2, 2);
+    -fx-effect: dropshadow(gaussian, grey, 2.5, 0, 1, 1);
+}
+.choice-box > .label {
+    -fx-text-fill: #000000;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-size: 10;
+}
+.arrow {
+    -fx-background-color: transparent;
 }
