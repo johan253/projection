@@ -179,6 +179,8 @@ public class MainController implements Initializable, PropertyChangeListener {
      */
     @FXML
     public void editProjectClick() {
+        // disable button
+        editProjectButton.setDisable(true);
         // container
         VBox vbox = new VBox();
         Stage stage = new Stage();
@@ -220,6 +222,7 @@ public class MainController implements Initializable, PropertyChangeListener {
         stage.setTitle("Edit Project");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/logo.png"))));
         stage.setScene(scene);
+        stage.setOnHidden(e -> editProjectButton.setDisable(false));
         stage.show();
     }
 
@@ -228,6 +231,7 @@ public class MainController implements Initializable, PropertyChangeListener {
      */
     @FXML
     public void deleteProjectClick() {
+        deleteProjectButton.setDisable(true);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("'" + projectSelector.getValue() + "'");
         alert.setContentText("Are you sure you would like to delete this project?\n" +
@@ -236,6 +240,7 @@ public class MainController implements Initializable, PropertyChangeListener {
             if(alert.getResult().equals(ButtonType.OK)) {
                 myDatabaseDriver.deleteProject(projectSelector.getValue());
             }
+            deleteProjectButton.setDisable(false);
         });
         alert.show();
     }
