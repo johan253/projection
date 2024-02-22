@@ -2,15 +2,16 @@
     -fx-background-color: #2020AA;
     -fx-font-family: "Arial Rounded MT Bold";
 }
-.menu_container .button, .choice-box {
+.choice-box > .label {
+    -fx-text-fill: #FFFFFF;
+}
+.menu_container .button, .choice-box{
     -fx-background-color: #2424FF;
     -fx-text-fill: #FFFFFF;
     -fx-effect: dropshadow(two-pass-box, #202066, 5, 0, 2, 2);
 }
-.titled-pane .title, .text {
-    -fx-background-color: #2020FF;
-    -fx-text-fill: #FFFFFF;
-    -fx-fill: #FFFFFF;
+.choice-box .menu-item > .label {
+    -fx-text-fill: #000000;
 }
 
 .arrow {
@@ -19,7 +20,7 @@
 .menu_container .button:hover, .choice-box:hover{
     -fx-cursor: hand;
 }
-.label {
+.welcome-label {
     -fx-text-alignment: center;
     -fx-font-size: 16;
     -fx-text-fill: #FFFFFF;

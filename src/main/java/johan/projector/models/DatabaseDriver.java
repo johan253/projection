@@ -63,7 +63,7 @@ public class DatabaseDriver implements PropertyChangeListener {
      * The current existing Projects
      */
     // TODO: may get rid of this and replace with methods to execute SQL queries
-    private Map<Integer, Project> myProjectMap;
+    private final Map<Integer, Project> myProjectMap;
     /**
      * Contains mappings of Consumer functions to call when a property change event is received
      */
@@ -99,7 +99,6 @@ public class DatabaseDriver implements PropertyChangeListener {
         }
         myMappings = new HashMap<>();
         setUpMappings();
-
     }
 
     /**
@@ -127,6 +126,7 @@ public class DatabaseDriver implements PropertyChangeListener {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("updating task title from " + oldTitle + " to " + newTitle);
     }
     /**
      * Updates the status of a task to the SQLite database
@@ -144,7 +144,7 @@ public class DatabaseDriver implements PropertyChangeListener {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
+        System.out.println("attempt update task status for " + name + " to" + newStatus);
     }
     /**
      * Updates the title of a Project to the SQLite database
@@ -161,6 +161,7 @@ public class DatabaseDriver implements PropertyChangeListener {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("attempted updating project title from "+oldTitle+" to "+newTitle);
     }
     /**
      * Updates the description of a Project to the SQLite database
@@ -177,6 +178,7 @@ public class DatabaseDriver implements PropertyChangeListener {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("attempted updating project desc for "+name+" to "+newDescription);
     }
 
     /**
@@ -192,7 +194,7 @@ public class DatabaseDriver implements PropertyChangeListener {
             String title = resultSet.getString(PROJECT_NAME_COLUMN);
             String description = resultSet.getString(PROJECT_DESCRIPTION_COLUMN);
             Integer id = resultSet.getInt(PROJECT_ID_COLUMN);
-            Project p = new Project(title, description);
+            final Project p = new Project(title, description);
             p.addPropertyChangeListener(this);
             myProjectMap.put(id, p);
         }
@@ -207,7 +209,7 @@ public class DatabaseDriver implements PropertyChangeListener {
                 case "FINISHED" -> TaskStatus.FINISHED;
                 default -> throw new SQLDataException("SQL database has illegal data, may be corrupted.");
             };
-            Task t = new Task(title, s);
+            final Task t = new Task(title, s);
             t.addPropertyChangeListener(this);
             myProjectMap.get(correspondingProjectID).addTask(t);
         }
@@ -219,11 +221,7 @@ public class DatabaseDriver implements PropertyChangeListener {
      * @return all the Projects
      */
     public List<Project> getAllProjects() {
-        List<Project> out = new ArrayList<>();
-        for (final Integer key : myProjectMap.keySet()) {
-            out.add(myProjectMap.get(key));
-        }
-        return out;
+        return new ArrayList<>(myProjectMap.values());
     }
 
     /**
@@ -240,6 +238,7 @@ public class DatabaseDriver implements PropertyChangeListener {
                 out = myProjectMap.get(key);
             }
         }
+        System.out.println("got project " + theName + ", returned: " + out);
         return out;
     }
 
@@ -250,6 +249,7 @@ public class DatabaseDriver implements PropertyChangeListener {
      * @return true if this operation was successful, false otherwise
      */
     public boolean addProject(final Project theProject) {
+        theProject.addPropertyChangeListener(this);
         boolean out = true;
         List<Task> tasks = theProject.getAllTasks();
         try {
@@ -274,6 +274,7 @@ public class DatabaseDriver implements PropertyChangeListener {
             System.out.println(e);
             out = false;
         }
+        System.out.println("attempted to add project "+theProject);
         return out;
     }
 
@@ -283,7 +284,6 @@ public class DatabaseDriver implements PropertyChangeListener {
      * @param theProject the title of the project
      */
     public void deleteProject(final String theProject) {
-        System.out.println("deleting project '" + theProject + "'");
         Integer projectID = -1;
         int count = 0;
         for (Integer i : myProjectMap.keySet()) {
@@ -307,6 +307,28 @@ public class DatabaseDriver implements PropertyChangeListener {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("attempted to delete "+theProject);
+    }
+    public void addTask(final Project theProject, final Task theTask) {
+        theTask.addPropertyChangeListener(this);
+        theProject.addTask(theTask);
+        Integer projectID = -1;
+        for(Integer i : myProjectMap.keySet()) {
+            if (myProjectMap.get(i).getTitle().equals(theProject.getTitle())) {
+                projectID = i;
+            }
+        }
+        try {
+            PreparedStatement statement = myConnection.prepareStatement("INSERT INTO Tasks(name, status, project_id) VALUES( ?, ?, ?)");
+            statement.setString(1, theTask.getTitle());
+            statement.setString(2, theTask.getStatus().name());
+            statement.setInt(3, projectID);
+            statement.addBatch();
+            statement.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("attempted adding task named "+theTask+", to "+theProject);
     }
 
     /**

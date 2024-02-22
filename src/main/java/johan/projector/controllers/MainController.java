@@ -170,8 +170,26 @@ public class MainController implements Initializable, PropertyChangeListener {
      * Handles a click to the create task button
      */
     @FXML
-    public void createTaskClick() {
-
+    public void createTaskClick() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/create-task.fxml"));
+        Scene scene = new Scene(loader.load());
+        CreateTaskController ctrl = loader.getController();
+        ctrl.setProject(myDatabaseDriver.getProject(projectSelector.getValue()));
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        createTaskButton.setDisable(true);
+        stage.setOnHidden((e) -> {
+            createTaskButton.setDisable(false);
+            projectSelector.setOnAction(a -> System.out.print(""));
+            projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
+            projectSelector.setOnAction(b -> refreshData());
+            projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0).getTitle());
+        });
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/logo.png"))));
+        stage.setTitle("Create new Porject");
+        stage.setX(addProjectButton.getScene().getWindow().getX() + 50);
+        stage.setY(addProjectButton.getScene().getWindow().getY() + 50);
+        stage.show();
     }
 
     /**
@@ -210,7 +228,7 @@ public class MainController implements Initializable, PropertyChangeListener {
             String newDesc = description.getText();
             myDatabaseDriver.getProject(projectSelector.getValue()).setDescription(newDesc);
             myDatabaseDriver.getProject(projectSelector.getValue()).setTitle(newTitle);
-            projectSelector.setOnAction(a -> System.out.println("resetting selectable projects..."));
+            projectSelector.setOnAction(a -> System.out.print(""));
             projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
             projectSelector.setOnAction(b -> refreshData());
             projectSelector.setValue(newTitle);

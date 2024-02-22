@@ -48,7 +48,7 @@ public class ProjectController {
             if(descriptionInput.getText().trim().isEmpty()) {
                 descriptionInput.setText("N/A");
             }
-            Project p = new Project(titleInput.getText(), descriptionInput.getText());
+            final Project p = new Project(titleInput.getText(), descriptionInput.getText());
             boolean success = DatabaseDriver.getInstance().addProject(p);
             if (!success) {
                 errorLabel.setText("Error in creating project");
