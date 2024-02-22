@@ -284,6 +284,29 @@ public class DatabaseDriver implements PropertyChangeListener {
      */
     public void deleteProject(final String theProject) {
         System.out.println("deleting project '" + theProject + "'");
+        Integer projectID = -1;
+        int count = 0;
+        for (Integer i : myProjectMap.keySet()) {
+            if (myProjectMap.get(i).getTitle().equals(theProject)) {
+                projectID = i;
+                count++;
+            }
+        }
+        if (count == 1) {
+            myProjectMap.remove(projectID);
+        } else {
+            throw new RuntimeException("cannot find project to delete, or illegal duplicates exist");
+        }
+        try {
+            PreparedStatement statement = myConnection.prepareStatement("DELETE FROM Tasks WHERE project_id=" + projectID);
+            statement.addBatch();
+            statement.executeBatch();
+            PreparedStatement statement2 = myConnection.prepareStatement("DELETE FROM Projects WHERE name='" + theProject + "'");
+            statement2.addBatch();
+            statement2.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
