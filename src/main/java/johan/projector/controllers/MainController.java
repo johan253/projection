@@ -239,7 +239,7 @@ public class MainController implements Initializable, PropertyChangeListener {
         alert.setOnHidden(e -> {
             if(alert.getResult().equals(ButtonType.OK)) {
                 myDatabaseDriver.deleteProject(projectSelector.getValue());
-                projectSelector.setOnAction(a -> System.out.println("resetting selectable projects..."));
+                projectSelector.setOnAction(a -> System.out.print(""));
                 projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
                 projectSelector.setOnAction(b -> refreshData());
                 projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0).getTitle());
@@ -263,7 +263,7 @@ public class MainController implements Initializable, PropertyChangeListener {
         addProjectButton.setDisable(true);
         stage.setOnHidden((e) -> {
             addProjectButton.setDisable(false);
-            projectSelector.setOnAction(a -> System.out.println("Creating project..."));
+            projectSelector.setOnAction(a -> System.out.print(""));
             projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
             projectSelector.setOnAction(b -> refreshData());
             projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0).getTitle());
