@@ -1,7 +1,6 @@
 package johan.projector.controllers;
 
 import javafx.collections.FXCollections;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,7 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * The Main controller for the application. Direct controller for "main.fxml"
  *
  * @author Johan Hernandez
- * @version 2.0.0
+ * @version 2.3.0
  */
 public class MainController implements Initializable, PropertyChangeListener {
     /**
@@ -56,10 +55,19 @@ public class MainController implements Initializable, PropertyChangeListener {
      */
     @FXML
     private ChoiceBox<String> projectSelector;
+    /**
+     * The panel that displays the unfinished tasks
+     */
     @FXML
     private VBox unfinishedTasksBox;
+    /**
+     * The panel that displays the in progress tasks
+     */
     @FXML
     private VBox inProgressTasksBox;
+    /**
+     * The panel that displays the finished tasks
+     */
     @FXML
     private VBox finishedTasksBox;
     /**
@@ -93,6 +101,7 @@ public class MainController implements Initializable, PropertyChangeListener {
      */
     private void refreshData() {
         taskData.clear();
+
         Project project = myDatabaseDriver.getProject(projectSelector.getValue());
         currentProjectTitleLabel.setText("Current Project: " + project.getTitle());
         currentProjectDescriptionLabel.setText(project.getDescription());
@@ -106,6 +115,12 @@ public class MainController implements Initializable, PropertyChangeListener {
         pieChart.getData().addAll(taskData);
         refreshTasks(project);
     }
+
+    /**
+     * Refreshes the tasks displayed on the dashboard
+     *
+     * @param theProject the project used to generate the tasks
+     */
     private void refreshTasks(final Project theProject) {
         unfinishedTasksBox.getChildren().clear();
         inProgressTasksBox.getChildren().clear();
@@ -236,6 +251,12 @@ public class MainController implements Initializable, PropertyChangeListener {
         stage.show();
     }
 
+    /**
+     * Handles the event of changing a task detail.
+     *
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         refreshData();

@@ -8,7 +8,7 @@ import java.util.*;
  * This Class represents a singular Project with Tasks attached to it.
  *
  * @author Johan Hernandez
- * @version 1.1.0
+ * @version 1.1.1
  */
 public class Project {
     /**
@@ -114,41 +114,6 @@ public class Project {
             out.addAll(myTasks.get(s));
         }
         return out;
-    }
-    /**
-     * Gets the unfinished tasks associated with this Project.
-     *
-     * @return the unfinished tasks
-     */
-    public List<Task> getUnfinishedTasks() {
-        if (myTasks.get(TaskStatus.UNFINISHED) == null) {
-            return null;
-        }
-        return new ArrayList<>(myTasks.get(TaskStatus.UNFINISHED));
-    }
-
-    /**
-     * Gets the in progress tasks associated with this Project.
-     *
-     * @return the in progress tasks
-     */
-    public List<Task> getInProgressTasks() {
-        if (myTasks.get(TaskStatus.INPROGRESS) == null) {
-            return null;
-        }
-        return new ArrayList<>(myTasks.get(TaskStatus.INPROGRESS));
-    }
-
-    /**
-     * Gets the finished tasks associated with this Project.
-     *
-     * @return the finished tasks
-     */
-    public List<Task> getFinishedTasks() {
-        if (myTasks.get(TaskStatus.FINISHED) == null) {
-            return null;
-        }
-        return new ArrayList<>(myTasks.get(TaskStatus.FINISHED));
     }
 
     /**

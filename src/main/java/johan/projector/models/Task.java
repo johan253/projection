@@ -7,7 +7,7 @@ import java.beans.PropertyChangeSupport;
  * This class represents a Task, that should be displayed with its corresponding Project.
  *
  * @author Johan Hernandez
- * @version 1.0.2
+ * @version 1.0.3
  */
 public class Task {
     /**
