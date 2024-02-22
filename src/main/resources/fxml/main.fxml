@@ -15,7 +15,7 @@
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" styleClass="menu_container" stylesheets="@../styles/menu.css" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="welcomeLabel" prefHeight="80.0" prefWidth="100.0" text="Welcome to Projector!" wrapText="true" />
+            <Label prefHeight="80.0" prefWidth="100.0" text="Welcome to Projector!" wrapText="true" />
             <ChoiceBox fx:id="projectSelector" prefWidth="150.0">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

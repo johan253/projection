@@ -31,6 +31,21 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class MainController implements Initializable, PropertyChangeListener {
     /**
+     * The create task button to create a task
+     */
+    @FXML
+    private Button createTaskButton;
+    /**
+     * The edit project button to edit a project
+     */
+    @FXML
+    private Button editProjectButton;
+    /**
+     * The delete project button to delete a project
+     */
+    @FXML
+    private Button deleteProjectButton;
+    /**
      * The add project button injected from the FXML file
      */
     @FXML
