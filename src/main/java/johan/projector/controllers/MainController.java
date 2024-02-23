@@ -1,6 +1,7 @@
 package johan.projector.controllers;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * The Main controller for the application. Direct controller for "main.fxml"
@@ -180,10 +182,11 @@ public class MainController implements Initializable, PropertyChangeListener {
         createTaskButton.setDisable(true);
         stage.setOnHidden((e) -> {
             createTaskButton.setDisable(false);
-            projectSelector.setOnAction(a -> System.out.print(""));
-            projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
-            projectSelector.setOnAction(b -> refreshData());
-            projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0).getTitle());
+//            projectSelector.setOnAction(a -> System.out.print(""));
+//            projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
+//            projectSelector.setOnAction(b -> refreshData());
+//            projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0).getTitle());
+            refreshData();
         });
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/logo.png"))));
         stage.setTitle("Create new Porject");
@@ -282,12 +285,21 @@ public class MainController implements Initializable, PropertyChangeListener {
         stage.setOnHidden((e) -> {
             addProjectButton.setDisable(false);
             projectSelector.setOnAction(a -> System.out.print(""));
+            String oldProjectString = projectSelector.getValue();
+            ObservableList<String> oldProjectList = projectSelector.getItems(); //testing
             projectSelector.setItems(FXCollections.observableList(myDatabaseDriver.getAllProjects().stream().map(Project::getTitle).toList()));
             projectSelector.setOnAction(b -> refreshData());
-            projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0).getTitle());
+            //projectSelector.setValue(myDatabaseDriver.getAllProjects().get(0).getTitle());
+            String newProject = List.copyOf(projectSelector.getItems())
+                    .stream().filter(s -> !oldProjectList.contains(s)).findFirst().orElse(""); //testing
+            if (!newProject.isEmpty()) {
+                projectSelector.setValue(newProject); //testing
+            } else {
+                projectSelector.setValue(oldProjectString);
+            }
         });
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/logo.png"))));
-        stage.setTitle("Create new Porject");
+        stage.setTitle("Create new Project");
         stage.setX(addProjectButton.getScene().getWindow().getX() + 50);
         stage.setY(addProjectButton.getScene().getWindow().getY() + 50);
         stage.show();

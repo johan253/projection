@@ -22,7 +22,8 @@ public class Project {
     /**
      * The Tasks associated with this project
      */
-    private final Map<TaskStatus, List<Task>> myTasks;
+//    private final Map<TaskStatus, List<Task>> myTasks;
+    private List<Task> myTasks;
     /**
      * The property change support object to send signals to listeners when certain properties change.
      */
@@ -47,10 +48,11 @@ public class Project {
         myTitle = theTitle;
         String d = theDescription.isBlank() ? "N/A" : theDescription;
         myDescription = d;
-        myTasks = new HashMap<>();
-        myTasks.put(TaskStatus.UNFINISHED, new ArrayList<>());
-        myTasks.put(TaskStatus.INPROGRESS, new ArrayList<>());
-        myTasks.put(TaskStatus.FINISHED, new ArrayList<>());
+//        myTasks = new HashMap<>();
+//        myTasks.put(TaskStatus.UNFINISHED, new ArrayList<>());
+//        myTasks.put(TaskStatus.INPROGRESS, new ArrayList<>());
+//        myTasks.put(TaskStatus.FINISHED, new ArrayList<>());
+        myTasks = new ArrayList<>();
         myPcs = new PropertyChangeSupport(this);
     }
 
@@ -109,11 +111,12 @@ public class Project {
      * @return all the Tasks
      */
     public List<Task> getAllTasks() {
-        List<Task> out = new ArrayList<>();
-        for (final TaskStatus s : myTasks.keySet()) {
-            out.addAll(myTasks.get(s));
-        }
-        return out;
+//        List<Task> out = new ArrayList<>();
+//        for (final TaskStatus s : myTasks.keySet()) {
+//            out.addAll(myTasks.get(s));
+//        }
+//        return out;
+        return myTasks;
     }
 
     /**
@@ -122,7 +125,8 @@ public class Project {
      * @param theTask the task
      */
     public void addTask(final Task theTask) {
-        myTasks.get(theTask.getStatus()).add(theTask);
+//        myTasks.get(theTask.getStatus()).add(theTask);
+        myTasks.add(theTask);
     }
 
     /**

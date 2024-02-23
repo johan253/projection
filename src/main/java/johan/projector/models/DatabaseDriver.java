@@ -279,7 +279,7 @@ public class DatabaseDriver implements PropertyChangeListener {
     }
 
     /**
-     * Deleted a project with the specified Title from the local SQLite database
+     * Delete a project with the specified Title from the local SQLite database
      *
      * @param theProject the title of the project
      */
@@ -309,6 +309,13 @@ public class DatabaseDriver implements PropertyChangeListener {
         }
         System.out.println("attempted to delete "+theProject);
     }
+
+    /**
+     * Add a Task to the local database.
+     *
+     * @param theProject the project associated with the task
+     * @param theTask the task being added
+     */
     public void addTask(final Project theProject, final Task theTask) {
         theTask.addPropertyChangeListener(this);
         theProject.addTask(theTask);
@@ -329,6 +336,34 @@ public class DatabaseDriver implements PropertyChangeListener {
             throw new RuntimeException(e);
         }
         System.out.println("attempted adding task named "+theTask+", to "+theProject);
+    }
+    /**
+     * Handles the deletion of a Task
+     *
+     * @param theTask the Task to be deleted
+     */
+    public void deleteTask(final Task theTask) {
+        int projectID = -1;
+        boolean b = false;
+        int count = 0;
+        for (Integer i : myProjectMap.keySet()) {
+            if(myProjectMap.get(i).getAllTasks().contains(theTask)) {
+                projectID = i;
+                 b = myProjectMap.get(i).getAllTasks().remove(theTask);
+                 count++;
+            }
+        }
+        if (b && count!=1) {
+            throw new RuntimeException("did not properly delete task: "+ b + " " + count);
+        }
+        try {
+            PreparedStatement statement = myConnection.prepareStatement("DELETE FROM Tasks WHERE name='" + theTask.getTitle() + "' AND project_id=" + projectID);
+            statement.addBatch();
+            statement.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("attempted to delete "+ theTask);
     }
 
     /**

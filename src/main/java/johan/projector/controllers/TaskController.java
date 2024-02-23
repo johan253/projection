@@ -2,9 +2,12 @@ package johan.projector.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import johan.projector.models.DatabaseDriver;
 import johan.projector.models.Task;
 import johan.projector.models.TaskStatus;
 
@@ -50,11 +53,12 @@ public class TaskController {
      * @param theTask the task
      */
     public void setTask(final Task theTask) {
+        deleteIcon.setStyle("-fx-font-family: FontAwesome; -fx-font-size: 1em; -fx-cursor: hand;");
         deleteIcon.setOnMouseClicked(e -> deleteClick());
         statusChoiceBox.setOnAction(e -> System.out.print(""));
         myTask = theTask;
         taskTitleLabel.setText(myTask.getTitle());
-        statusChoiceBox.setItems(FXCollections.observableList(List.of("Unfinished", "Finished", "In Progress")));
+        statusChoiceBox.setItems(FXCollections.observableList(List.of("Unfinished", "In Progress", "Finished")));
         statusChoiceBox.setValue(switch(theTask.getStatus()) {
             case UNFINISHED -> "Unfinished";
             case INPROGRESS -> "In Progress";
@@ -90,6 +94,18 @@ public class TaskController {
      */
     private void deleteClick() {
         System.out.println("deleting task...");
+        deleteIcon.setOnMouseClicked(e -> System.out.print(""));
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("'" + myTask.getTitle() + "'");
+        alert.setContentText("Are you sure you would like to delete this Task?\n" +
+                "There is no way to undo this action.");
+        alert.setOnHidden(e -> {
+            if(alert.getResult().equals(ButtonType.OK)) {
+                DatabaseDriver.getInstance().deleteTask(myTask);
+                myPcs.firePropertyChange("", null, null);
+            }
+        });
+        alert.show();
     }
 
 }
