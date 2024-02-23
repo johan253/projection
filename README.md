@@ -4,7 +4,7 @@ towards them. Made with the JavaFX library, Projection is a simple yet beautiful
 app.
 
 ### Version
-0.2.0 (prototype)
+0.5.0 (pre-alpha)
 
 ## Built with
 * [JavaFX](https://openjfx.io/) - GUI framework used
