@@ -252,6 +252,17 @@ public class MainController implements Initializable, PropertyChangeListener {
      */
     @FXML
     public void deleteProjectClick() {
+        System.out.println("projects: " + projectSelector.getItems().size());
+        if(projectSelector.getItems().size() == 1) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Delete Project Error");
+            error.setContentText("""
+                    You cannot delete your only project!
+                    Create another project to delete the current one.
+                    """);
+            error.show();
+            return;
+        }
         deleteProjectButton.setDisable(true);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("'" + projectSelector.getValue() + "'");
