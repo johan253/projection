@@ -16,5 +16,22 @@ app.
 * [Font Awesome](https://fontawesome.com/) - Icon/Graphic elements
 * [SQLite](https://www.sqlite.org/index.html) - Local Data Management
 
+## Get started
+Clone this repo
+```bash
+# ~/
+git clone https://github.com/johan253/projection
+```
+Inside the new directory, on Windows run
+```bash
+# ~/projection
+mvnw.cmd javafx:run
+```
+On Linux/MacOS, run
+```bash
+# ~/projection
+mvnw javafx:run
+```
+
 ## Contributions
 _Johan Hernandez - Main Developer_
